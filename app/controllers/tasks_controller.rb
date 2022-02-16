@@ -3,16 +3,18 @@ class TasksController < ApplicationController
   # DRY principle is important
   before_action :find_task, only: [:show, :edit, :update, :destroy]
 
+  # GET /tasks
   def index
     @tasks = Task.all
   end
 
+  # GET /tasks/1
   def show
-  end #View the details of each task
+  end
 
+  # GET /tasks/new
   def new
-    # Needed to instatiate the form_for
-    @task = Task.new
+    @task = Task.new # Needed to instatiate the form_for
   end
 
   def create
@@ -23,28 +25,31 @@ class TasksController < ApplicationController
     redirect_to task_path(@task)
   end
 
+  # GET /tasks/1/edit
   def edit
   end
 
+  # PATCH/PUT /tasks/1
   def update
     # Same reason as "create method"
     @task.update(task_params)
     redirect_to task_path(@task)
   end
 
+  # DESTROY /tasks/1
   def destroy
     @task.destroy
-    # no need for app/views/restaurants/destroy.html.erb
-    redirect_to tasks_path
+    redirect_to tasks_path # no need for app/views/restaurants/destroy.html.erb
   end
 
   private
 
   def task_params
-    # This prevent assigning request that is not permitted
+    # Only allow a trusted parameter "white list" through
     params.require(:task).permit(:title, :details, :completed)
   end
 
+  # Use callbacks to share setup or constraints between actions
   def find_task
     @task = Task.find(params[:id])
   end
